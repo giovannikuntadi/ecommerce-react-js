@@ -15,9 +15,12 @@ export function Navbar() {
           <Link to="/" className="navbar-link">
             Home
           </Link>
-          <Link to="/cart" className="navbar-link">
-            Cart
-          </Link>
+
+          {user && (
+            <Link to="/cart" className="navbar-link">
+              Cart
+            </Link>
+          )}
         </div>
         <div className="navbar-auth">
           {user ? (

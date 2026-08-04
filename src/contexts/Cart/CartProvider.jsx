@@ -50,8 +50,32 @@ export function CartProvider({ children }) {
     [cartItems, removeFromCart],
   );
 
+  const getCartTotal = useCallback(() => {
+    const total = cartItems.reduce((total, item) => {
+      const product = getProductById(item.id);
+      return total + (product ? product.price * item.quantity : 0);
+    }, 0);
+
+    return total;
+  }, [cartItems]);
+
+  const clearOrder = useCallback(() => {
+    setCartItems([]);
+    alert('Thank you for your purchase!!');
+  }, []);
+
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, getCartItemsWithProducts, updateQuantity, removeFromCart }}>
+    <CartContext.Provider
+      value={{
+        cartItems,
+        addToCart,
+        getCartItemsWithProducts,
+        updateQuantity,
+        removeFromCart,
+        getCartTotal,
+        clearOrder,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

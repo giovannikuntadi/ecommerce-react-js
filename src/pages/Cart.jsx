@@ -2,7 +2,11 @@ import { useCart } from '@/contexts/Cart';
 import { useCallback, useMemo } from 'react';
 
 export function Cart() {
-  const { getCartItemsWithProducts, updateQuantity, removeFromCart } = useCart();
+  const { getCartItemsWithProducts, updateQuantity, removeFromCart, getCartTotal, clearOrder } = useCart();
+
+  const cartTotal = useMemo(() => {
+    return getCartTotal();
+  }, [getCartTotal]);
 
   const cartItems = useMemo(() => {
     return getCartItemsWithProducts();
@@ -49,7 +53,7 @@ export function Cart() {
           <div className="checkout-items">
             <h2 className="checkout-section-title">Order Summary</h2>
             {cartItems.map(item => (
-              <div className="checkout-item">
+              <div className="checkout-item" key={item.id}>
                 <img src={item.product.image} alt={item.product.name} className="checkout-item-image" />
                 <div className="checkout-item-details">
                   <h3 className="checkout-item-name">{item.product.name}</h3>
@@ -78,6 +82,20 @@ export function Cart() {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="checkout-summary">
+            <h2 className="checkout-section-title">Total</h2>
+            <div className="checkout-total">
+              <p className="checkout-total-label">Subtotal: </p>
+              <p className="checkout-total-value">${cartTotal.toFixed(2)}</p>
+            </div>
+            <div className="checkout-total">
+              <p className="checkout-total-label">Total: </p>
+              <p className="checkout-total-value checkout-total-final">${cartTotal.toFixed(2)}</p>
+            </div>
+            <button className="btn btn-primary btn-large btn-block" onClick={() => clearOrder()}>
+              Place Order
+            </button>
           </div>
         </div>
       </div>
