@@ -24,11 +24,7 @@ export function Auth() {
 
       mode === 'signup' ? (result = signup(data.email, data.password)) : (result = login(data.email, data.password));
 
-      if (result.success) {
-        navigate('/');
-      } else {
-        setError(result.error);
-      }
+      result.success ? navigate('/') : setError(result.error);
     },
     [mode, signup, login, navigate],
   );

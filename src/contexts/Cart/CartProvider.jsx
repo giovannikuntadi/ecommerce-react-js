@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { CartContext } from './CartContext';
-import { getProductById } from '../../data/products';
+import { getProductById } from '@/data/products';
 
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
