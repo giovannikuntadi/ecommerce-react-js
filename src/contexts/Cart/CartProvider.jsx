@@ -1,8 +1,11 @@
 import { useCallback, useState } from 'react';
 import { CartContext } from './CartContext';
 import { getProductById } from '@/data/products';
+import { useAuth } from '../Auth';
 
 export function CartProvider({ children }) {
+  const { user } = useAuth();
+
   const [cartItems, setCartItems] = useState([]);
 
   const getCartItemsWithProducts = useCallback(() => {
@@ -16,19 +19,23 @@ export function CartProvider({ children }) {
 
   const addToCart = useCallback(
     productId => {
-      const existing = cartItems.find(item => item.id === productId);
+      if (user) {
+        const existing = cartItems.find(item => item.id === productId);
 
-      if (existing) {
-        const updatedQty = cartItems.map(item =>
-          item.id === productId ? { id: productId, quantity: existing.quantity + 1 } : item,
-        );
-        setCartItems(updatedQty);
+        if (existing) {
+          const updatedQty = cartItems.map(item =>
+            item.id === productId ? { id: productId, quantity: existing.quantity + 1 } : item,
+          );
+          setCartItems(updatedQty);
+        } else {
+          const newItem = { id: productId, quantity: 1 };
+          setCartItems([...cartItems, newItem]);
+        }
       } else {
-        const newItem = { id: productId, quantity: 1 };
-        setCartItems([...cartItems, newItem]);
+        alert('Please login to purchase our products!');
       }
     },
-    [cartItems],
+    [user, cartItems],
   );
 
   const removeFromCart = useCallback(

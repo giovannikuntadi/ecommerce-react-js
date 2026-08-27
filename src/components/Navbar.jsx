@@ -34,11 +34,11 @@ export function Navbar() {
             </>
           ) : (
             <>
-              <Link to="/auth" className="btn btn-secondary">
+              {/* <Link to="/auth" className="btn btn-secondary">
                 Login
-              </Link>
+              </Link> */}
               <Link to="/auth" className="btn btn-primary">
-                Register
+                Sign Up
               </Link>
             </>
           )}
